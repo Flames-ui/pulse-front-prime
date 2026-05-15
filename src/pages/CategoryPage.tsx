@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { getCategoryBySlug, getPostsByCategory, CATEGORIES } from '@/lib/data';
 import { Post, Category } from '@/lib/types';
 import { PostCard } from '@/components/blog/PostCard';
@@ -29,10 +30,8 @@ const CategoryPage = () => {
         const catData = await getCategoryBySlug(slug);
         if (catData) {
           setCategory(catData);
-          // FIXED: getPostsByCategory only accepts categoryName, returns { posts, total }
           const { posts: fetchedPosts, total } = await getPostsByCategory(catData.name);
           
-          // Apply pagination locally
           const startIndex = (page - 1) * postsPerPage;
           const paginatedPosts = fetchedPosts.slice(startIndex, startIndex + postsPerPage);
           
@@ -66,7 +65,7 @@ const CategoryPage = () => {
         <h1 className="text-4xl font-black uppercase italic mb-4">CATEGORY NOT FOUND</h1>
         <p className="text-gray-500 mb-8">The category you are looking for does not exist or has been moved.</p>
         <Button asChild>
-          <Link to="/blog">BACK TO ALL BLUEPRINTS</Link>
+          <Link href="/blog">BACK TO ALL BLUEPRINTS</Link>
         </Button>
       </div>
     );
@@ -115,7 +114,7 @@ const CategoryPage = () => {
             variant="outline"
             className="rounded-none font-black uppercase text-[10px] tracking-widest h-12 px-6 shrink-0"
           >
-            <Link to="/blog">ALL</Link>
+            <Link href="/blog">ALL</Link>
           </Button>
           {CATEGORIES.map(cat => (
             <Button
@@ -124,7 +123,7 @@ const CategoryPage = () => {
               variant={slug === cat.slug ? 'default' : 'outline'}
               className={`rounded-none font-black uppercase text-[10px] tracking-widest h-12 px-6 shrink-0 ${slug === cat.slug ? 'bg-[#0066FF] text-white' : ''}`}
             >
-              <Link to={`/category/${cat.slug}`}>{cat.name}</Link>
+              <Link href={`/category/${cat.slug}`}>{cat.name}</Link>
             </Button>
           ))}
         </div>
