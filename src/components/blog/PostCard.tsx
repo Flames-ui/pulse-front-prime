@@ -1,16 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Post } from '@/lib/types';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowRight, Eye, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-
-// Shared Link component that works in both Next.js and Vite
-const UniversalLink = ({ href, children, ...props }: any) => {
-  return <a href={href} {...props}>{children}</a>;
-};
 
 interface PostCardProps {
   post: Post;
@@ -52,11 +48,11 @@ export const PostCard: React.FC<PostCardProps> = ({ post, horizontal = false }) 
             <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {post.readTime}</span>
           </div>
           
-          <UniversalLink href={`/blog/${post.slug}`}>
+          <Link href={`/blog/${post.slug}`}>
             <h3 className={`font-black uppercase tracking-tighter leading-[0.9] group-hover:text-[#0066FF] transition-colors mb-4 dark:text-white ${horizontal ? 'text-2xl md:text-4xl' : 'text-xl md:text-2xl'}`}>
               {post.title}
             </h3>
-          </UniversalLink>
+          </Link>
           
           <p className="text-gray-500 dark:text-gray-400 line-clamp-2 text-sm font-medium leading-relaxed mb-6">
             {post.excerpt}
@@ -73,9 +69,9 @@ export const PostCard: React.FC<PostCardProps> = ({ post, horizontal = false }) 
               <span className="text-[8px] text-gray-400 uppercase font-bold">Author</span>
             </div>
           </div>
-          <UniversalLink href={`/blog/${post.slug}`} className="text-[#0066FF] font-black flex items-center gap-2 group/btn text-[10px] uppercase italic tracking-[0.2em]">
+          <Link href={`/blog/${post.slug}`} className="text-[#0066FF] font-black flex items-center gap-2 group/btn text-[10px] uppercase italic tracking-[0.2em]">
             Read Guide <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-2 text-[#FF6B00]" />
-          </UniversalLink>
+          </Link>
         </CardFooter>
       </div>
     </Card>
