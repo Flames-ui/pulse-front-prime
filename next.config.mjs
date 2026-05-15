@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: false,
-  swcMinify: true,
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
