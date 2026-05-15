@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { getTagBySlug, getPostsByTag, CATEGORIES } from '@/lib/data';
 import { Post } from '@/lib/types';
 import { PostCard } from '@/components/blog/PostCard';
@@ -66,7 +67,7 @@ const TagPage = () => {
         <h1 className="text-4xl font-black uppercase italic mb-4">TAG NOT FOUND</h1>
         <p className="text-gray-500 mb-8">The tag you are looking for does not exist or has been removed.</p>
         <Button asChild>
-          <Link to="/blog">BACK TO ALL BLUEPRINTS</Link>
+          <Link href="/blog">BACK TO ALL BLUEPRINTS</Link>
         </Button>
       </div>
     );
