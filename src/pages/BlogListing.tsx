@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { MOCK_POSTS, CATEGORIES } from '@/lib/data';
 import { PostCard } from '@/components/blog/PostCard';
 import { SEO } from '@/components/blog/SEO';
@@ -12,9 +12,8 @@ import { Button } from '@/components/ui/button';
 
 const BlogListing = () => {
   const [mounted, setMounted] = useState(false);
-  const location = useLocation();
-  const pathname = location.pathname;
-  const searchParams = new URLSearchParams(location.search);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   
   // Extract slug from pathname if it's a category or tag page
   const slug = pathname.split('/').pop() || '';
@@ -91,10 +90,10 @@ const BlogListing = () => {
           <div className="flex gap-3 overflow-x-auto w-full lg:w-auto no-scrollbar">
             <Button
               asChild
-              variant={!isCategoryPage ? 'default' : 'outline'}
-              className={`rounded-none font-black uppercase text-[10px] tracking-widest h-16 px-8 ${!isCategoryPage ? 'bg-[#0A0F1E] text-white' : ''}`}
+              variant={!isCategoryPage && !isTagPage ? 'default' : 'outline'}
+              className={`rounded-none font-black uppercase text-[10px] tracking-widest h-16 px-8 ${!isCategoryPage && !isTagPage ? 'bg-[#0A0F1E] text-white' : ''}`}
             >
-              <Link to="/blog">ALL</Link>
+              <Link href="/blog">ALL</Link>
             </Button>
             {CATEGORIES.map(cat => (
               <Button
@@ -103,7 +102,7 @@ const BlogListing = () => {
                 variant={slug === cat.slug ? 'default' : 'outline'}
                 className={`rounded-none font-black uppercase text-[10px] tracking-widest h-16 px-8 ${slug === cat.slug ? 'bg-[#0066FF] text-white' : ''}`}
               >
-                <Link to={`/category/${cat.slug}`}>{cat.name}</Link>
+                <Link href={`/category/${cat.slug}`}>{cat.name}</Link>
               </Button>
             ))}
           </div>
@@ -137,7 +136,7 @@ const BlogListing = () => {
             <h3 className="text-3xl font-black uppercase italic mb-4">NO ARCHIVES FOUND</h3>
             <p className="text-gray-400 font-medium">Systems could not locate blueprints matching your query.</p>
             <Button asChild variant="link" className="mt-8 font-black uppercase text-[#0066FF] italic">
-              <Link to="/blog">REBOOT SEARCH</Link>
+              <Link href="/blog">REBOOT SEARCH</Link>
             </Button>
           </div>
         )}
