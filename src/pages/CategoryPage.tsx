@@ -29,8 +29,14 @@ const CategoryPage = () => {
         const catData = await getCategoryBySlug(slug);
         if (catData) {
           setCategory(catData);
-          const { posts: fetchedPosts, total } = await getPostsByCategory(catData.name, page, postsPerPage);
-          setPosts(fetchedPosts);
+          // FIXED: getPostsByCategory only accepts categoryName, returns { posts, total }
+          const { posts: fetchedPosts, total } = await getPostsByCategory(catData.name);
+          
+          // Apply pagination locally
+          const startIndex = (page - 1) * postsPerPage;
+          const paginatedPosts = fetchedPosts.slice(startIndex, startIndex + postsPerPage);
+          
+          setPosts(paginatedPosts);
           setTotalPosts(total);
         }
       } catch (error) {
