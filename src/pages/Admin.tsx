@@ -114,6 +114,12 @@ export const Admin = () => {
     toast.success('PULSE DEPLOYED SUCCESSFULLY');
   };
 
+  // FIXED: Added proper type annotation for the 'id' parameter
+  const handleDelete = (id: string) => {
+    setPosts(posts.filter(p => p.id !== id));
+    toast.success('POST DELETED');
+  };
+
   if (!isAuthenticated) return <LoginScreen form={loginForm} setForm={setLoginForm} onSubmit={handleLogin} loading={isLoggingIn} />;
 
   return (
@@ -130,7 +136,8 @@ export const Admin = () => {
 
         <div className="p-12 max-w-7xl mx-auto">
           {activeTab === 'dashboard' && <DashboardView stats={stats} posts={posts} onEdit={handleOpenEditor} />}
-          {activeTab === 'posts' && <PostsView posts={posts} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onEdit={handleOpenEditor} onDelete={(id) => setPosts(posts.filter(p => p.id !== id))} />}
+          {/* FIXED: Using the properly typed handleDelete function */}
+          {activeTab === 'posts' && <PostsView posts={posts} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onEdit={handleOpenEditor} onDelete={handleDelete} />}
           {activeTab === 'comments' && <PlaceholderView title="FEEDBACK MODERATION" />}
           {activeTab === 'analytics' && <PlaceholderView title="CORE METRICS" />}
           {activeTab === 'settings' && <PlaceholderView title="SYSTEM CONFIG" />}
@@ -154,9 +161,16 @@ export const Admin = () => {
   );
 };
 
-/* --- SUB-COMPONENTS --- */
+/* --- SUB-COMPONENTS WITH PROPER TYPES --- */
 
-const LoginScreen = ({ form, setForm, onSubmit, loading }: any) => (
+interface LoginScreenProps {
+  form: { email: string; password: string };
+  setForm: React.Dispatch<React.SetStateAction<{ email: string; password: string }>>;
+  onSubmit: (e: React.FormEvent) => void;
+  loading: boolean;
+}
+
+const LoginScreen = ({ form, setForm, onSubmit, loading }: LoginScreenProps) => (
   <div className="min-h-screen bg-[#0A0F1E] flex items-center justify-center p-6 relative overflow-hidden">
     <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-[#0066FF]/10 rounded-full blur-[160px]" />
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md relative z-10">
@@ -187,7 +201,13 @@ const LoginScreen = ({ form, setForm, onSubmit, loading }: any) => (
   </div>
 );
 
-const AdminSidebar = ({ activeTab, setActiveTab, onLogout }: any) => (
+interface AdminSidebarProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  onLogout: () => void;
+}
+
+const AdminSidebar = ({ activeTab, setActiveTab, onLogout }: AdminSidebarProps) => (
   <aside className="w-80 bg-[#0A0F1E] text-white flex flex-col sticky top-0 h-screen z-50 border-r border-white/5">
     <div className="p-10 border-b border-white/5">
       <div className="flex items-center gap-4">
@@ -221,7 +241,20 @@ const AdminSidebar = ({ activeTab, setActiveTab, onLogout }: any) => (
   </aside>
 );
 
-const DashboardView = ({ stats, posts, onEdit }: any) => (
+interface Stats {
+  totalViews: number;
+  avgReadTime: string;
+  activePosts: number;
+  pendingComments: number;
+}
+
+interface DashboardViewProps {
+  stats: Stats;
+  posts: Post[];
+  onEdit: (post: Post) => void;
+}
+
+const DashboardView = ({ stats, posts, onEdit }: DashboardViewProps) => (
   <div className="space-y-12">
     <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
       {[
@@ -258,9 +291,17 @@ const DashboardView = ({ stats, posts, onEdit }: any) => (
   </div>
 );
 
-const PostsView = ({ posts, searchQuery, setSearchQuery, onEdit, onDelete }: any) => (
+interface PostsViewProps {
+  posts: Post[];
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  onEdit: (post: Post) => void;
+  onDelete: (id: string) => void;
+}
+
+const PostsView = ({ posts, searchQuery, setSearchQuery, onEdit, onDelete }: PostsViewProps) => (
   <div className="space-y-8">
-    <div className="bg-white p-6 border-l-8 border-[#0066FF] shadow-sm flex flex-col md:row gap-4 items-center">
+    <div className="bg-white p-6 border-l-8 border-[#0066FF] shadow-sm flex flex-col md:flex-row gap-4 items-center">
       <div className="relative flex-1 w-full"><Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" /><Input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="SEARCH ARCHIVES..." className="pl-12 h-14 rounded-none" /></div>
       <Button variant="outline" className="h-14 rounded-none font-black uppercase text-[10px]"><Filter className="w-4 h-4 mr-2" /> FILTERS</Button>
     </div>
@@ -270,7 +311,7 @@ const PostsView = ({ posts, searchQuery, setSearchQuery, onEdit, onDelete }: any
           <tr><th className="px-10 py-6">TITLE</th><th className="px-10 py-6">CATEGORY</th><th className="px-10 py-6">VIEWS</th><th className="px-10 py-6 text-right">ACTIONS</th></tr>
         </thead>
         <tbody className="divide-y">
-          {posts.filter((p: any) => p.title.toLowerCase().includes(searchQuery.toLowerCase())).map((p: Post) => (
+          {posts.filter((p: Post) => p.title.toLowerCase().includes(searchQuery.toLowerCase())).map((p: Post) => (
             <tr key={p.id} className="hover:bg-gray-50/50">
               <td className="px-10 py-6 font-black uppercase text-sm italic">{p.title}</td>
               <td className="px-10 py-6"><Badge className="bg-gray-100 text-gray-600 rounded-none">{p.category}</Badge></td>
@@ -289,7 +330,15 @@ const PostsView = ({ posts, searchQuery, setSearchQuery, onEdit, onDelete }: any
   </div>
 );
 
-const EditorModal = ({ data, setData, editor, onClose, onSave }: any) => (
+interface EditorModalProps {
+  data: Partial<Post>;
+  setData: React.Dispatch<React.SetStateAction<Partial<Post>>>;
+  editor: any; // TipTap editor instance
+  onClose: () => void;
+  onSave: () => void;
+}
+
+const EditorModal = ({ data, setData, editor, onClose, onSave }: EditorModalProps) => (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-8">
     <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} className="bg-white w-full max-w-[1400px] h-full flex flex-col overflow-hidden">
       <header className="bg-gray-50 border-b p-8 flex justify-between items-center">
@@ -314,8 +363,8 @@ const EditorModal = ({ data, setData, editor, onClose, onSave }: any) => (
                  <h4 className="font-black uppercase italic border-b-4 border-black pb-2">FAQ MODULE (MIN 3)</h4>
                  {data.faqs?.map((f: any, i: number) => (
                    <div key={i} className="space-y-2">
-                     <Input placeholder="QUESTION" value={f.question} onChange={e => { const newFaqs = [...data.faqs]; newFaqs[i].question = e.target.value; setData({...data, faqs: newFaqs}); }} />
-                     <Input placeholder="ANSWER" value={f.answer} onChange={e => { const newFaqs = [...data.faqs]; newFaqs[i].answer = e.target.value; setData({...data, faqs: newFaqs}); }} />
+                     <Input placeholder="QUESTION" value={f.question} onChange={e => { const newFaqs = [...(data.faqs || [])]; newFaqs[i].question = e.target.value; setData({...data, faqs: newFaqs}); }} />
+                     <Input placeholder="ANSWER" value={f.answer} onChange={e => { const newFaqs = [...(data.faqs || [])]; newFaqs[i].answer = e.target.value; setData({...data, faqs: newFaqs}); }} />
                    </div>
                  ))}
               </div>
