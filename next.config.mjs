@@ -1,17 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Disable Turbopack for production builds if it causes SIGKILL memory issues
+  productionBrowserSourceMaps: false,
+  swcMinify: true,
   experimental: {
-    // Addressing the "optimizePackageImports" mention in the logs
-    optimizePackageImports: [
-      'lucide-react',
-      '@radix-ui/react-icons',
-      'framer-motion',
-      'date-fns',
+    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+  },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.supabase.co' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'upload.wikimedia.org' },
+      { protocol: 'https', hostname: 'picsum.photos' },
     ],
   },
-  // Set output to standalone for better memory management in some environments
-  output: 'standalone',
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
