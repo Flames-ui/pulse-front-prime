@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Home = () => {
   const [mounted, setMounted] = useState(false);
@@ -45,7 +45,7 @@ const Home = () => {
               <p className="text-gray-400 text-lg md:text-2xl font-medium max-w-xl leading-relaxed">The world's leading blueprints for content monetization, SEO mastery, and high-performance growth by <span className="text-white">{CEO_NAME}</span>.</p>
               <div className="flex flex-wrap gap-6 pt-6">
                 <Button asChild className="bg-[#0066FF] hover:bg-[#0066FF]/90 text-white font-black italic uppercase h-16 px-12 rounded-none tracking-widest shadow-2xl">
-                  <Link to="/blog">ACCESS ARCHIVES</Link>
+                  <Link href="/blog">ACCESS ARCHIVES</Link>
                 </Button>
                 <div className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.2em] text-gray-500 border-l-4 border-gray-800 pl-6"><span className="text-white">128K+</span> OPERATIONAL <br/> SUBSCRIBERS</div>
               </div>
@@ -66,7 +66,7 @@ const Home = () => {
           <div className="lg:w-2/3">
             <div className="flex items-center justify-between mb-16 border-b-8 border-[#0A0F1E] pb-6">
               <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter">LATEST <span className="text-[#0066FF]">BLUEPRINTS</span></h2>
-              <Link to="/blog" className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2">ALL POSTS <ArrowRight className="w-4 h-4" /></Link>
+              <Link href="/blog" className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2">ALL POSTS <ArrowRight className="w-4 h-4" /></Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">{latestPosts.map(post => <PostCard key={post.id} post={post} />)}</div>
           </div>
