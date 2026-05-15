@@ -16,9 +16,9 @@ const BlogListing = () => {
   const searchParams = useSearchParams();
   
   // Extract slug from pathname if it's a category or tag page
-  const slug = pathname.split('/').pop() || '';
-  const isCategoryPage = pathname.startsWith('/category');
-  const isTagPage = pathname.startsWith('/tag');
+  const slug = pathname?.split('/').pop() || '';
+  const isCategoryPage = pathname?.startsWith('/category') || false;
+  const isTagPage = pathname?.startsWith('/tag') || false;
 
   const [searchQuery, setSearchQuery] = useState('');
 
