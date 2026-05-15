@@ -1,0 +1,103 @@
+@theme inline {
+  --color-navy: #0A0F1E;
+  --color-primary: #0066FF;
+  --color-secondary: #FF6B00;
+}
+
+@layer base {
+  /* Site-wide Font Fixes for non-post content */
+  h1:not(.blog-content h1) {
+    @apply text-3xl font-black uppercase italic tracking-tighter leading-[0.95];
+  }
+  @media (min-width: 768px) {
+    h1:not(.blog-content h1) { @apply text-5xl; }
+  }
+  @media (min-width: 1024px) {
+    h1:not(.blog-content h1) { @apply text-7xl; }
+  }
+  
+  h2:not(.blog-content h2) {
+    @apply text-xl font-black uppercase italic tracking-tighter leading-none;
+  }
+  @media (min-width: 768px) {
+    h2:not(.blog-content h2) { @apply text-3xl; }
+  }
+  @media (min-width: 1024px) {
+    h2:not(.blog-content h2) { @apply text-4xl; }
+  }
+
+  h3:not(.blog-content h3) {
+    @apply text-lg font-black uppercase italic tracking-tight leading-none;
+  }
+  @media (min-width: 768px) {
+    h3:not(.blog-content h3) { @apply text-xl; }
+  }
+  @media (min-width: 1024px) {
+    h3:not(.blog-content h3) { @apply text-2xl; }
+  }
+
+  /* Specific UI text reductions */
+  .mobile-nav-link {
+    @apply text-2xl font-black uppercase italic tracking-tighter;
+  }
+  @media (min-width: 768px) {
+    .mobile-nav-link { @apply text-4xl; }
+  }
+
+  /* Blog Content Styles */
+  .blog-content h2 {
+    @apply text-xl font-black uppercase italic tracking-tighter mt-12 mb-6 text-navy;
+  }
+  @media (min-width: 768px) {
+    .blog-content h2 { @apply text-3xl; }
+  }
+  
+  .blog-content h3 {
+    @apply text-lg font-black uppercase italic tracking-tight mt-10 mb-5 text-navy;
+  }
+  @media (min-width: 768px) {
+    .blog-content h3 { @apply text-2xl; }
+  }
+
+  .blog-content p {
+    @apply text-gray-600 text-sm leading-relaxed font-medium mb-6;
+  }
+  @media (min-width: 768px) {
+    .blog-content p { @apply text-lg; }
+  }
+
+  .blog-content ul {
+    @apply list-none space-y-3 mb-6;
+  }
+  .blog-content li {
+    @apply relative pl-8 text-sm font-medium text-gray-600;
+  }
+  @media (min-width: 768px) {
+    .blog-content li { @apply text-lg; }
+  }
+  
+  .blog-content li::before {
+    content: "";
+    @apply absolute left-0 top-3 w-4 h-1 bg-secondary;
+  }
+  
+  .blog-content blockquote {
+    @apply border-l-8 border-primary bg-blue-50/50 p-6 my-10 text-lg font-black italic uppercase tracking-tight text-navy leading-tight;
+  }
+  @media (min-width: 768px) {
+    .blog-content blockquote { @apply p-10 my-16 text-2xl; }
+  }
+
+  .blog-content strong {
+    @apply font-black text-navy;
+  }
+}
+
+/* Custom Utilities */
+.tracking-tightest { letter-spacing: -0.05em; }
+.tracking-widest-plus { letter-spacing: 0.5em; }
+
+/* Scroll Lock Fix */
+body.menu-open {
+  overflow: hidden;
+}

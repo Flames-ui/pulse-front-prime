@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://giantpulse.name.ng/sitemap.xml
