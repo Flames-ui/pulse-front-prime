@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { MOCK_POSTS, CEO_NAME, CEO_AVATAR } from '@/lib/data';
 import { SEO } from '@/components/blog/SEO';
 import { 
@@ -73,9 +74,9 @@ const SinglePost = () => {
       {/* Breadcrumbs */}
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400">
-          <Link to="/" className="hover:text-[#0066FF]">HOME</Link>
+          <Link href="/" className="hover:text-[#0066FF]">HOME</Link>
           <ChevronRight className="w-3 h-3" />
-          <Link to={`/category/${post.category.toLowerCase()}`} className="hover:text-[#0066FF]">{post.category}</Link>
+          <Link href={`/category/${post.category.toLowerCase()}`} className="hover:text-[#0066FF]">{post.category}</Link>
           <ChevronRight className="w-3 h-3" />
           <span className="truncate">{post.title}</span>
         </div>
@@ -99,7 +100,7 @@ const RenderTemplate = ({ post, templateId, relatedPosts, prevPost, nextPost, cu
       <HelpfulWidget postId={post.id} />
       <div className="mt-12 flex flex-wrap gap-2">
         {post.tags.map((tag: string) => (
-          <Link key={tag} to={`/tag/${tag.toLowerCase()}`}>
+          <Link key={tag} href={`/tag/${tag.toLowerCase()}`}>
             <Badge variant="outline" className="rounded-none border-2 font-black uppercase text-[10px] h-8 px-4 hover:bg-black hover:text-white transition-all">#{tag}</Badge>
           </Link>
         ))}
@@ -254,7 +255,7 @@ const Sidebar = ({ relatedPosts }: any) => (
         <h4 className="text-xs font-black uppercase tracking-widest mb-8 border-b-4 border-[#0A0F1E] pb-4">RELATED BLUEPRINTS</h4>
         <div className="space-y-8">
           {relatedPosts.map((p: any) => (
-            <Link key={p.id} to={`/blog/${p.slug}`} className="flex gap-4 group">
+            <Link key={p.id} href={`/blog/${p.slug}`} className="flex gap-4 group">
               <div className="w-24 h-24 shrink-0 overflow-hidden border-2 border-gray-100">
                 <img src={p.featuredImage} alt={p.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" />
               </div>
@@ -273,7 +274,7 @@ const NavigationSection = ({ prev, next }: any) => (
   <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-gray-100 mt-20">
     <div className="p-8 md:p-12 border-b-2 md:border-b-0 md:border-r-2 border-gray-100 group cursor-pointer hover:bg-gray-50 transition-colors">
       {prev && (
-        <Link to={`/blog/${prev.slug}`}>
+        <Link href={`/blog/${prev.slug}`}>
           <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><ArrowLeft className="w-3 h-3" /> PREVIOUS PULSE</p>
           <h4 className="text-lg font-black uppercase italic leading-none group-hover:text-[#0066FF] transition-colors">{prev.title}</h4>
         </Link>
@@ -281,7 +282,7 @@ const NavigationSection = ({ prev, next }: any) => (
     </div>
     <div className="p-8 md:p-12 group cursor-pointer hover:bg-gray-50 transition-colors text-right">
       {next && (
-        <Link to={`/blog/${next.slug}`}>
+        <Link href={`/blog/${next.slug}`}>
           <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center justify-end gap-2">NEXT PULSE <ArrowRight className="w-3 h-3" /></p>
           <h4 className="text-lg font-black uppercase italic leading-none group-hover:text-[#FF6B00] transition-colors">{next.title}</h4>
         </Link>
@@ -295,7 +296,7 @@ const RelatedGrid = ({ posts }: { posts: any[] }) => (
     <h3 className="text-2xl font-black uppercase italic mb-10 border-l-8 border-[#0066FF] pl-6">EXPLORE MORE BLUEPRINTS</h3>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       {posts.map(p => (
-        <Link key={p.id} to={`/blog/${p.slug}`} className="group">
+        <Link key={p.id} href={`/blog/${p.slug}`} className="group">
            <div className="aspect-video overflow-hidden mb-4 border-2 border-gray-100"><img src={p.featuredImage} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt="" /></div>
            <p className="text-[8px] font-black text-[#FF6B00] uppercase mb-2">{p.category}</p>
            <h4 className="font-black uppercase text-sm group-hover:text-[#0066FF] transition-colors">{p.title}</h4>
@@ -309,7 +310,7 @@ const NotFound = () => (
   <div className="py-40 text-center flex flex-col items-center justify-center min-h-screen">
     <div className="w-24 h-24 bg-[#0A0F1E] flex items-center justify-center mb-8 rotate-12"><Zap className="w-12 h-12 text-[#FF6B00]" /></div>
     <h1 className="text-4xl md:text-7xl font-black uppercase italic mb-8 tracking-tighter">404: PULSE NOT FOUND</h1>
-    <Button asChild className="bg-[#0066FF] hover:bg-[#0066FF]/90 rounded-none h-16 px-12 font-black italic uppercase"><Link to="/">RESTART SYSTEM</Link></Button>
+    <Button asChild className="bg-[#0066FF] hover:bg-[#0066FF]/90 rounded-none h-16 px-12 font-black italic uppercase"><Link href="/">RESTART SYSTEM</Link></Button>
   </div>
 );
 
